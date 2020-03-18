@@ -40,12 +40,10 @@ plot(pressure)
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 ## Creat object
 ```{r}
-a <- 2
-a = 2 # = 與 <-同義
+`我的年紀` <-19
+my_age <-`我的年紀`
 
-3 -> b
-
-a
+my_age
 ```
 ## name rule
 ```{r}
