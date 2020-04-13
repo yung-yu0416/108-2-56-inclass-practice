@@ -178,3 +178,40 @@ vectorExample
 vectorExample[c(T,T,F)] # 要，要，不要
 ```
 
+```{r}
+str(listExample)
+str(listExample[c(F,T)]) # 不要，要
+listExample[c("學期")]
+str(listExample[c(T,T)]) # 要，要
+```
+
+用「要/不要」邏輯向量自taipeiNightMarkets選出 寧夏觀光夜市，西昌街觀光夜市，大龍街夜市， 雙城街夜市。
+
+```{r}
+names(taipeiNightMarkets)
+
+c(T,F,F,
+  F,T,F,
+  F,F,F,
+  T,F,F,
+  F,F,T) -> selectmarkets
+taipeiNightMarkets[selectmarkets]
+
+str(taipeiNightMarkets[c(T,F,F,
+  F,T,F,
+  F,F,F,
+  T,F,F,
+  F,F,T)], max.level=1 )
+```
+
+```{r}
+selectmarkets <- rep(F,14) #repeat F by 14 times
+print(selectmarkets)
+selectmarkets[c(1,5,10,14)] <- TRUE #replacement
+print(selectmarkets)
+```
+
+```{r}
+str(taipeiNightMarkets[selectmarkets], max.level = 1)
+```
+
