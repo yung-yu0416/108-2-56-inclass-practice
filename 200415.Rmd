@@ -328,6 +328,7 @@ str(list1)
 ```{r}
 library(jsonlite)
 fromJSON("https://data.ntpc.gov.tw/od/data/api/54DDDC93-589C-4858-9C95-18B2046CC1FC?$format=json", simplifyDataFrame = F) -> newTaipeiYouBike
+#1
 str(newTaipeiYouBike[[2]])
 newTaipeiYouBike[[2]][-c(2,5,6)] -> newTaipeiYouBike[[2]]
 str(newTaipeiYouBike[[2]])
@@ -336,6 +337,7 @@ str(newTaipeiYouBike[[2]])
 ```{r}
 library(jsonlite)
 fromJSON("https://data.ntpc.gov.tw/od/data/api/54DDDC93-589C-4858-9C95-18B2046CC1FC?$format=json", simplifyDataFrame = F) -> newTaipeiYouBike
+#2
 str(newTaipeiYouBike[[2]])
 newTaipeiYouBike[[2]][c(2,5,6)] <- NULL
 str(newTaipeiYouBike[[2]])
