@@ -1,0 +1,212 @@
+---
+title: '200415'
+author: "yung-yu"
+date: "2020/4/19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+majors <- c("經濟學系","經濟學系","社會學系","社工系","經濟學系")
+names <- c("小英", "小美", "大雄","阿華", "阿尼")
+gender <- c("F","F","M","F","M")
+```
+
+```{r}
+listExample <-
+  list(
+    student="小明",
+    `學期`=list(
+      `108-1`=list(
+        list(
+          name="個體經濟學",
+          teacher="Alice",
+          grade=85
+        )
+      ),
+      `108-2`=list(
+        list(
+          name="總體體經濟學",
+          teacher="Mark",
+          grade=78
+        )
+      )
+      
+    )
+  )
+```
+
+```{r}
+str(listExample)
+```
+
+```{r}
+listExample[[1]]
+listExample[[2]]
+```
+
+```{r}
+get1 <- listExample[["學期"]] #拿出來
+get2 <- listExample["學期"] #只留下
+```
+
+```{r}
+str(get1)
+```
+
+```{r}
+str(get2)
+```
+
+### 用get1取[[]]
+```{r}
+get1$`108-1` -> get1_layer1 ; #get1_layer1 
+str(get1_layer1)
+```
+
+```{r}
+get1_layer1[[1]] -> get1_layer2 ; #get1_layer2
+str(get1_layer2)
+```
+
+```{r}
+get1_layer2$teacher
+```
+
+```{r}
+get1$`108-1`[[1]]$teacher
+```
+
+### 用get2取[]
+```{r}
+get2 <- listExample["學期"]
+get2_layer1 <- get2[[1]]
+get2_layer2 <- get2_layer1[["108-1"]]
+get2_layer3 <- get2_layer2[[1]]
+get2_layer3$teacher
+```
+
+今明兩日台北市、新北市氣溫：
+```{r}
+today <- list(
+  list("台北市",c(highest_temp = 25),c(lowest_temp = 18)),
+  list("新北市",c(highest_temp = 24),c(lowest_temp = 15)))
+str(today)
+```
+
+```{r}
+today <- list(
+  list("台北市",
+       highest_temp =c(highest_temp = 25),
+       lowest_temp =c(lowest_temp = 18)),
+  list("新北市",
+       highest_temp =c(highest_temp = 24),
+       lowest_temp =c(lowest_temp = 15)))
+str(today)
+```
+
+
+```{r}
+today[[1]]$highest_temp
+```
+
+
+
+```{r}
+today <- list(
+  list("台北市",c(highest_temp = 25),c(lowest_temp = 18)),
+  list("新北市",c(highest_temp = 24),c(lowest_temp = 15)))
+tomorrow <- list(
+  list("台北市",c(highest_temp = 25),c(lowest_temp = 18)),
+  list("新北市",c(highest_temp = 24),c(lowest_temp = 15)))
+
+weather <- list(today,tomorrow)
+
+print(weather)
+```
+
+## 下
+
+### 新增/替換/刪除元素
+
+```{r}
+a <- c("1","b","TRUE")
+a
+a[[2]] <- "c" # 元素存在: 替換
+a[[4]] <- "7" # 元素不存在： 增加
+a[c(5,6)] <- c("J", "K")
+a
+```
+
+```{r}
+library(lubridate)
+list1 <- 
+  list(
+    list(
+      name="Jack",
+      birthday=ymd("1998-03-21"),
+      status=c(height=177, weight=80)
+    )
+  )
+
+str(list1)
+```
+
+```{r}
+a[[7]] <- "Johnson"
+a
+
+a <- c(a,c("Mary")) #向量疊代
+a
+```
+
+```{r}
+library(lubridate)
+list1 <- 
+  list(
+    list(
+      name="Jack",
+      birthday=ymd("1998-03-21"),
+      status=c(height=177, weight=80)
+    )
+  )
+
+str(list1)
+```
+
+
+```{r}
+# 更改日期
+list1[[1]]$birthday <- ymd("1997-03-21")
+
+# 新增資料
+list1[[2]] <- list(
+  name="Mary",
+  birthday=ymd("1998-08-24")
+)
+
+str(list1)
+```
+
