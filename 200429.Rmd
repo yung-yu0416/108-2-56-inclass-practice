@@ -454,34 +454,22 @@ library(stringr)
 ```
 
 ```{r}
+fruit <- c("apple", "banana", "pear", "pinapple")
+str_detect(fruit, "a")
+str_detect(fruit, "^a")
+str_detect(fruit, "a$")
+!str_detect(fruit, "a$")
+str_detect(fruit, "b")
+str_detect(fruit, "[aeiou]")
 
 ```
 
 ```{r}
-
+CDC_chatbox <- readr::read_csv("http://od.cdc.gov.tw/pr/CDC_chatbox.csv")
 ```
 
 ```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
+pick_pneumonia <- stringr::str_detect(CDC_chatbox$Question,"肺炎")
+CDC_chatbox$Question[pick_pneumonia]
 ```
 
