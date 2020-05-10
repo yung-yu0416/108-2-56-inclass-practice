@@ -207,7 +207,112 @@ str_extract(addresses,myRegexSlotMachine)
 ```
 
 ```{r}
+addresses <- c(
+  '臺中市后里區公館里尾社路385號',
+  '新竹市東區科學園路125號1樓',
+  '新竹市北區竹光路99號',
+  '金門縣金城鎮賢庵里山前33號',
+  '臺中市南屯區工業區二十四路23號1樓')
+```
 
+```{r}
+myRegexSlotMachine <- "[0-9]+號"
+print(myRegexSlotMachine)
+str_view_all(addresses,myRegexSlotMachine)
+str_extract(addresses,myRegexSlotMachine)
+
+str_view_all(addresses,"[0-9]+") # 樓號也會選到
+```
+
+```{r}
+phrase <- c("唧唧复唧唧")
+```
+
+在開頭：^target_regex
+在結尾：target_regex$
+
+```{r}
+# 目標是前面的唧唧
+target_regex <- "唧唧"
+pattern <- glue::glue("^{target_regex}")
+print(pattern)
+str_view(phrase, pattern) 
+```
+
+```{r}
+# 目標是後面的唧唧
+target_regex2 <- "唧唧"
+pattern <- glue::glue("{target_regex2}$")
+print(pattern)
+str_view(phrase, pattern) 
+```
+
+target後面是B：target_regex(?=B_regex)： target_pattern後面是年
+target前面是A：(?<=A_regex)target_regex：target_pattern前面是民國
+target前有A後有B：(?<=A_regex)target_regex(?=B_regex)
+
+```{r}
+twDate <-  c("民國108年12月5日","民國98年10月5日")
+
+library(stringr)
+# 準備regex: 
+## 取出：「前有」民國，「後有」年的「數字」「們」
+## "(?<={A_regex}){target_regex}(?={B_regex})"
+
+target_regex <- "[0-9]+"
+A_regex <- "民國"
+B_regex <- "年"
+
+regex_pattern <- glue::glue(
+  "(?<={A_regex}){target_regex}(?={B_regex})"
+  )
+
+print(regex_pattern)
+
+## 如果同學已經很熟就可以直接寫
+regex_pattern <-
+  "(?<=民國)[0-9]+(?=年)"
+
+# 取出民國年，計算西元年
+year <- 
+  str_extract(
+    twDate,
+    regex_pattern)
+westernYear <- as.integer(year)+1911
+
+# 替換民國xx年的xx成西元年數字
+str_replace(
+  twDate,
+  regex_pattern,  # 要換掉的文字
+  as.character(westernYear) # 要替換的內容
+) -> twDate_reformat
+print(twDate_reformat)
+
+datefinal <-
+lubridate::ymd(twDate_reformat)
+```
+
+```{r}
+addresses <- c(
+  '臺中市后里區公館里尾社路385號',
+  '新竹市東區科學園路125號1樓'
+  )
+```
+
+```{r}
+str_extract(addresses,"[0-9]+(?=號)")
+```
+
+## 字元模版
+
+[:graph:] 包山包海，還包中文字元。
+
+[\u4E00-\u9FFF] 代表所有中日韓文字字元
+
+```{r}
+str_extract_all(
+  "我的名字8293叫17380小abce明",
+  "[\u4E00-\u9FFF]+")
 ```
 
 ```{r}
