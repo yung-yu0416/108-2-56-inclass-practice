@@ -114,8 +114,62 @@ population[levelsInData] -> population
 ```
 
 ```{r}
+population <- sort(population, decreasing=T)
+population
+```
+
+```{r}
+newLevels <- names(population)
+newLevels
+```
+重設levels排序
+```{r}
+covid19$`縣市` <-
+  factor(
+    covid19$`縣市`, levels=newLevels
+  )
+
+levels(covid19$`縣市`)
+```
+## 綠色框框練習
+將covid19$縣市 依縣市目前個案數目由大排到小。（hint: 可使用table()來得到個案數統計, 它會自然產生named integer vector）
+```{r}
+table(covid19$`縣市`)
+table(covid19$`縣市`) -> table_covid19
+names(sort(table_covid19, decreasing=T)) -> NewLevels
+covid19$`縣市` <- factor(covid19$`縣市` , levels = NewLevels)
+levels(covid19$`縣市`)
+```
+
+```{r}
+levels(covid19$`年齡層`)
+```
+
+```{r}
 
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
