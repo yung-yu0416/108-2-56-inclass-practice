@@ -146,11 +146,31 @@ levels(covid19$`年齡層`)
 ```
 
 ```{r}
-
+level_names <- levels(covid19$`年齡層`)
+startingAges <- stringr::str_extract(
+  level_names,
+  "^[0-9]+" # regex：開頭的一串數字
+)
 ```
 
+```{r}
+# 要numerical class排的才一定對
+startingAges <- as.integer(startingAges)
+names(startingAges) <- level_names
+```
 
+```{r}
+sort(startingAges) -> startingAges
+startingAges
+```
 
+```{r}
+covid19$`年齡層` <- 
+  factor(
+    covid19$`年齡層`, names(startingAges)
+  )
+levels(covid19$`年齡層`)
+```
 
 
 
