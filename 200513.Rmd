@@ -262,14 +262,66 @@ levels(covid19$`年齡層`) <- newLevels
 covid19$`年齡層`
 ```
 
+levels擴充
 
+```{r}
+factor2 <- 
+  factor(c("好","好","普通","普通", "好"))
+levels(factor2)
+```
 
+```{r}
+factor2[[6]] <- "差"
+factor2 # 元素6變NA
+```
 
+先擴大levels, 再加新資料
+```{r}
+factor2 <- 
+  factor(c("好","好","普通","普通", "好"))
+levels(factor2)
 
+# 先擴大levels
+levels(factor2) <- c(levels(factor2), "差")
+levels(factor2)
+factor2[[6]] <- "差"
+factor2
 
+levels(factor2)[[4]] <- "尚可"
+factor2[[7]] <- "尚可"
+factor2
+```
 
+```{r}
+# non factor
+char1 <- c("小明","小美")
+char2 <- c("大雄","技安")
+c(char1, char2)
 
+# factor
+factor1 <- factor(c("好", "壞", "壞"))
+factor2 <- factor(c("壞", "好", "好"))
+c(factor1, factor2)
+```
+正確接法：
+```{r}
+factor1[4:6] <- factor2
+factor1
+```
+或使用套件forcats裡的fct_c函數
+```{r}
+forcats::fct_c(factor1, factor2)
+```
+4.7.5綜合練習
+```{r}
+levels(covid19$`性別`) <- c("Male", "Female")
+levels(covid19$`性別`)
 
+```
 
+```{r}
+jsonlite::fromJSON("https://data.ntpc.gov.tw/od/data/api/EDC3AD26-8AE7-4916-A00B-BC6048D19BF8?$format=json") ->
+  garbageRoutes
+```
 
 
