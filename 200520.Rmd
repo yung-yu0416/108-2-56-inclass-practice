@@ -200,21 +200,198 @@ map(weather_next36hours$cwbopendata$dataset$location$weatherElement, ~max(as.int
 ```
 
 
+第 5 章 Programming
+
+5.1 Pipe
+
+```{r}
+threeHeigths <- c(Gary=178, John=182, Cam=175)
+```
+
+找出身高最高的人：
+
+先排序由大到小，
+接著取出第一個位置的人名
+
+法一
+```{r}
+# 先排序由大到小，
+sort(threeHeigths, decreasing=T) -> sorted_heights
+
+# 把排好的人名取出
+names(sorted_heights) -> sorted_persons
+
+# 接著取出第一個位置的人名
+sorted_persons[[1]] -> highestPerson
+```
+
+法二
+```{r}
+names(sort(threeHeigths, decreasing = T))[[1]] -> highestPerson
+```
+
+```{r}
+library(magrittr)
+```
+
+```{r}
+sort(threeHeigths, decreasing=T) %>% 
+names(.) %>%
+.[[1]] -> highestPerson
+```
+
+5.1.1 原則
+
+```{r}
+f(w) -> x
+g(x) -> y
+h(y) -> z
+```
+可寫成
+```{r}
+Copy
+f(w) %>%
+  g(.) %>% 
+  h(.) -> z
+```
+
+範例2
+
+```{r}
+# 由cities創出每個元素對應的北部、東部、中部region factor
+cities <- factor(c("台北","花蓮","台東","台中"))
+levels(cities)
+```
+
+```{r}
+region <- cities
+library(stringr)
+# 以下為一連串的pipe operation
+levels(region) -> currentLevels
+str_replace(currentLevels,"台北","北部") -> currentLevels1
+str_replace(currentLevels1,"花蓮|台東","東部") -> currentLevels2
+str_replace(currentLevels2,"台中","中部") -> regionLevels
+regionLevels -> levels(region)
+```
+
+```{r}
+levels(region) %>% 
+  str_replace(.,"台北","北部") %>%
+  str_replace(.,"花蓮|台東","東部") %>%
+  str_replace(.,"台中","中部") ->
+  levels(region)
+```
+
+5.1.2 元素粹取
+
+```{r}
+num <- c(2,97,22,15,7)
+
+# 選出大於50的數字
+```
 
 
+```{r}
+(num > 50) -> pick_big
+num[pick_big]
+```
 
+```{r}
+(num > 50) %>%
+  num[.]
+```
 
+執行順序
+R在面對pipe時會先把pipe走完最後才去做值assign給最後物件的動作，例如：
+```{r}
+threeHeights %>%
+  .sort(., decreasing=T) %>%
+  names(.) %>%
+  .[[1]] -> highestPerson
+```
 
+.省略原則
+```{r}
+levels(region) %>%
+  str_replace(.,"台北","北部") %>%
+  str_replace(.,"花蓮|台東","東部") %>%
+  str_replace(.,"台中","中部") ->
+  levels(region)
+```
 
+```{r}
+levels(region) %>% 
+  str_replace("台北","北部") %>%
+  str_replace("花蓮|台東","東部") %>%
+  str_replace("台中","中部") -> 
+  levels(region)
+```
 
+要小心%>%是將左邊output放到右邊函數，這裡的右邊函數指的是最外圍的函數：
 
+```{r}
+# 資料
+population <- c(`cityA`=500,`cityB`=1500, `cityC`=399)
+cities <- c("cityA","cityA","cityB","cityB","cityC")
 
+# 分析步驟
+names(sort(population)) -> setLevels
+factor(cities, levels = setLevels) -> cities 
+```
 
+```{r}
+population %>% 
+  names(sort(.)) %>% # error
+  factor(cities, levels=.) -> cities
+```
 
+正確寫法
+```{r}
+population %>%
+  sort() %>%
+  names() %>%
+  factor(cities, levels=.) -> cities
+```
 
+串接非單純函數程序
 
+error
+```{r}
+population %>% 
+  names(sort(.)) %>%
+  factor(cities, levels=.) -> cities
+```
 
+correct
+```{r}
+population %>% 
+  {names(sort(.))} %>%
+  factor(cities, levels=.) -> cities
+```
 
+```{r}
+dataList <- list(
+  num=c(2,97,22,15,7),
+  chr=c("2","97","22","15","7")
+)
+```
 
+```{r}
+library(purrr)
+map(dataList, is.numeric) -> results
+unlist(results) -> pick_numeric
 
+dataList[pick_numeric] -> num_element
+(num_element[[1]] > 50) -> pick_big
+num_element[[1]][pick_big] -> bigNumber
+```
+
+```{r}
+map(dataList, is.numeric) %>%
+unlist(.) %>%
+
+dataList[.] %>%
+{(.[[1]] > 50)} %>%
+num_element[[1]][.] -> bigNumber
+```
 
