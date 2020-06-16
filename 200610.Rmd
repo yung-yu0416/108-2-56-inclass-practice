@@ -1,0 +1,178 @@
+---
+title: '200610'
+author: "yung-yu"
+date: "2020/6/17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+某個條件符合才執行
+```{r}
+if(condition){
+  Body for TRUE
+  }
+```
+
+```{r}
+# 先執行此行輸入學號
+readline(prompt = "請輸入你的學號") -> studentId 
+
+# 之後才執行以下程式
+library(stringr)
+if(
+  str_detect(studentId,'^[43](1[01][0-9]|9[0-9])[0-9]{5}$',negate=T) # condition: 是否輸入學號正確？
+) {
+  warning("你所輸入的學號不正確")
+}
+```
+
+```{r}
+if(!require(lubridate)){ # condition: 是否「沒安裝lubridate」？
+  install.packages("lubridate")
+}
+lubridate::ymd_hms("2020-07-01 13:00:00 GMT")
+```
+
+```{r}
+twDate <-  c("民國108年12月5日","民國98年10月5日")
+
+library(stringr)
+# 準備regex: 
+## 取出：「前有」民國，「後有」年的「數字」「們」
+## "(?<={A_regex}){target_regex}(?={B_regex})"
+
+target_regex <- "[0-9]+"
+A_regex <- "民國"
+B_regex <- "年"
+
+regex_pattern <- glue::glue(
+  "(?<={A_regex}){target_regex}(?={B_regex})"
+  )
+
+print(regex_pattern)
+
+## 如果同學已經很熟就可以直接寫
+regex_pattern <-
+  "(?<=民國)[0-9]+(?=年)"
+
+# 取出民國年，計算西元年
+year <- 
+  str_extract(
+    twDate,
+    regex_pattern)
+westernYear <- as.integer(year)+1911
+
+# 替換民國xx年的xx成西元年數字
+str_replace(
+  twDate,
+  regex_pattern,  # 要換掉的文字
+  as.character(westernYear) # 要替換的內容
+) -> twDate_reformat
+print(twDate_reformat)
+
+
+lubridate::ymd(twDate_reformat)
+```
+
+```{r}
+convert_TaiwanDate2WesternDate <- function(twDate){
+  library(stringr)
+  regex_pattern <-
+    "(?<=民國)[0-9]+(?=年)"
+  
+  # 取出民國年，計算西元年
+  year <- 
+    str_extract(
+      twDate,
+      regex_pattern)
+  westernYear <- as.integer(year)+1911
+  
+  # 替換民國xx年的xx成西元年數字
+  str_replace(
+    twDate,
+    regex_pattern,  # 要換掉的文字
+    as.character(westernYear) # 要替換的內容
+  ) -> twDate_reformat
+  
+  lubridate::ymd(twDate_reformat) -> westernDate
+  return(westernDate)
+}
+
+twDate <-  c("民國108年12月5日","民國98年10月5日")
+convert_TaiwanDate2WesternDate(twDate)
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
