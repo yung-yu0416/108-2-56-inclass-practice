@@ -301,12 +301,48 @@ myGrade
 ```
 
 ```{r}
-
+if (is.factor(myAnswer) & all(myAnswer == correctAnswer)) {
+    print("答對了")
+    10
+} else myGrade <- {
+    print("答錯了")
+    0
+}
+myGrade
 ```
 
+```{r}
+myAge <- 40
+myChildrenNumber <- 5
 
+if (myAge >= 65 | myChildrenNumber > 3) {
+    "符合申請資格"
+} else {
+    warning("不符合申請資格")
+}
 
+if (myAge >= 65 || myChildrenNumber > 3) {
+    "符合申請資格"
+} else {
+    warning("不符合申請資格")
+}
+```
 
+```{r}
+myAge <- 67
+myChildrenNumber <- 5
+```
+
+```{r}
+x <- c(2, 5, 10, -21, 3, 8)
+ifelse(x%%2 == 0, "even", "odd")
+```
+
+```{r}
+y <- sample(40:100, 20, replace = T)
+dplyr::case_when(y < 60 ~ "F", 60 <= y & y < 70 ~ "D", 71 <= y & y < 80 ~ "C", 80 <= 
+    y & y < 90 ~ "B", 90 <= y ~ "A")
+```
 
 
 
