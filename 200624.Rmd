@@ -292,8 +292,162 @@ get_courses(academicYears[[4]], allGrades[[4]], courseStructure)
 ```
 
 ```{r}
+output <- vector("{type}", length={len})
+for(.x in {sequence}){
+  {body}
+}
+```
+
+```{r}
+library(jsonlite)
+library(purrr)
+### 前置作業
+entranceYear <- 100
+major <- "經濟系"
+allGrades <- paste0(major, 1:4)
+academicYears <- entranceYear+0:3
+
+jsonlite::fromJSON("https://www.dropbox.com/s/7myzzdnoor21hye/courseStructure2.json?dl=1") -> courseStructure
+
+get_courses <- function(acadYear_i, grade_i, courseStructure){
+  pick <-
+  (courseStructure$`學年`==acadYear_i 
+    &
+    str_detect(courseStructure$`應修系級`, grade_i))
+  
+  return(
+    unique(courseStructure$`科目名稱`[pick])
+  )
+}
+```
+
+```{r}
+# 前置作業，接map iteration
+map(1:4, 
+    ~{
+      get_courses(academicYears[[.x]], 
+              allGrades[[.x]], 
+              courseStructure)})
+```
+
+```{r}
+# 前置作業，接for iteration
+output <- vector("list", length=4)
+for(.x in 1:4){
+  get_courses(academicYears[[.x]], 
+                allGrades[[.x]], 
+                courseStructure) -> output[[.x]]
+}
+```
+
+```{r}
+map(1:10,
+    ~toast_withEggHam(toast=toast[[.x]], egg=eggs[[.x]], ham=ham[[.x]]))
+```
+
+```{r}
+output <- vector("character", 10)
+for(.x in 1:10){
+  toast_withEggHam(toast=toast[[.x]], egg=eggs[[.x]], ham=ham[[.x]]) -> output[[.x]]
+}
+```
+
+```{r}
+a <- sample(1:100, 10, replace=T)
+print(a)
+```
+
+```{r}
+sum <- 0
+for(.x in 1:10){
+  sum <- sum+a[[.x]]
+}
+
+print(sum)
+```
+
+```{r}
+output <- c()
+for(.x in 1:10){
+  new <- sample(0:100,1)
+  if(new %% 3==0){
+    output <- c(output, new)
+  }
+}
+
+print(output)
+```
+
+next
+有時.x對應元素要附合某些條件才要進行body裡某些處理，不然可「跳過」。
+
+```{r}
+list(
+  list("student A", c(2,3,4,5)),
+  list("student B", NA), # 沒交作業
+  list("student C", factor(c(2,3,4,5))),
+  list("student D", factor(c(2,3,5)))
+) -> collectionHWs
+
+correctAns <- factor(c(2,3,4,5))
+
+output <- vector("integer",length(collectionHWs))
+nameVector <- vector("character", length(collectionHWs))
+for(.x in seq_along(collectionHWs)){
+  nameVector[[.x]] <- collectionHWs[[.x]][[1]]
+  studentAns <- collectionHWs[[.x]][[2]] 
+  if(is.na(studentAns)){
+    output[[.x]] <- 0
+    next
+  } 
+  
+  # 改題部份
+  if(identical(studentAns, correctAns)){
+    output[[.x]] <- 10
+  } else if (class(studentAns)!=class(correctAns) && identical(as.character(studentAns),as.character(correctAns))) {
+    output[[.x]] <- 5
+  } else {
+    output[[.x]] <- 0
+  }
+}
+names(output) <- nameVector
+
+print(output)
+```
+
+```{r}
 
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
